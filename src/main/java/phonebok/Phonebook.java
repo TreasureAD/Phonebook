@@ -11,6 +11,10 @@ public class Phonebook {
         this.phonebook = map;
     }
 
+    public Map<String, List<String>> getPhoneBook(){
+        return phonebook;
+    }
+
     // Default constructor that creates a new HashMap for the phonebook
     public Phonebook() {
         this(new HashMap<>());
@@ -24,8 +28,14 @@ public class Phonebook {
 
     // Method to add multiple phone numbers to a single contact
     public void addAll(String name, String... phoneNumbers) {
-        // computeIfAbsent makes sure there is a list for the name, then adds all phoneNumbers to it
-        phonebook.computeIfAbsent(name, k -> new ArrayList<>()).addAll(Arrays.asList(phoneNumbers));
+
+        if (!phonebook.containsKey(name)) {
+            // If not, create a new list for this contact
+            phonebook.put(name, new ArrayList<>());
+        }
+        // Add all phone numbers to the contact's list
+        phonebook.get(name).addAll(Arrays.asList(phoneNumbers));
+
     }
 
     // Method to remove a contact by name from the phonebook
@@ -65,5 +75,7 @@ public class Phonebook {
         // keySet returns a set of all keys in the map in a list
         return new ArrayList<>(phonebook.keySet());
     }
+
+
 }
 
